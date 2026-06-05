@@ -439,7 +439,7 @@
     </div>
 
     <div class="friends-section">
-      <div class="section-label" style="margin-bottom:12px">Amigos</div>
+      <div class="section-label" style="margin-bottom:12px">Melhores Amigos</div>
       <div class="friends-row">
         <a class="friend" data-name="They Call">
           <img src="https://files.catbox.moe/zxrbp0.png" alt="They Call">
@@ -452,6 +452,10 @@
         <a class="friend" data-name="Trvwz7">
           <img src="https://files.catbox.moe/kqpvbr.png" alt="Trvwz7">
           <span class="friend-tip">Trvwz7</span>
+        </a>
+        <a class="friend" data-name="Miel">
+          <img src="https://files.catbox.moe/hcptgr.jpg" alt="Miel">
+          <span class="friend-tip">Miel</span>
         </a>
       </div>
     </div>
@@ -582,7 +586,15 @@
     cur = ((i % tracks.length) + tracks.length) % tracks.length;
     const t = tracks[cur];
     audio.src = t.url;
-    artImg.src = t.art;
+    // Update art with fade
+    artImg.style.opacity = '0';
+    artImg.style.transition = 'opacity 0.3s';
+    setTimeout(() => {
+      artImg.src = t.art;
+      artImg.onload = () => { artImg.style.opacity = '1'; };
+      // fallback in case onload doesn't fire (cached)
+      setTimeout(() => { artImg.style.opacity = '1'; }, 200);
+    }, 150);
     titleEl.textContent = t.name;
     artistEl.textContent = t.artist;
     progFill.style.width = '0%';
@@ -594,6 +606,7 @@
       audio.play().then(() => {
         playing = true; playBtn.textContent = 'Pause';
         artImg.classList.add('spinning');
+        if (bgVideo) bgVideo.pause();
       }).catch(()=>{});
     }
   }
@@ -603,10 +616,12 @@
       audio.pause(); playing = false;
       playBtn.textContent = 'Play';
       artImg.classList.remove('spinning');
+      if (bgVideo) bgVideo.play().catch(()=>{});
     } else {
       audio.play().then(() => {
         playing = true; playBtn.textContent = 'Pause';
         artImg.classList.add('spinning');
+        if (bgVideo) bgVideo.pause();
       }).catch(()=>{});
     }
   }
