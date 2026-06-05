@@ -1,11 +1,11 @@
-var firebaseConfig = {
-    apiKey: "AIzaSyBP6_x00NmTX9yRNA2LpTdk0cPJQfIgbgs",
-    authDomain: "miel-website-50a32.firebaseapp.com",
-    databaseURL: "https://miel-website-50a32-default-rtdb.firebaseio.com",
-    projectId: "miel-website-50a32",
-    storageBucket: "miel-website-50a32.firebasestorage.app",
-    messagingSenderId: "386877582726",
-    appId: "1:386877582726:web:c914fa9344d05a53aa5007"
+const firebaseConfig = {
+  apiKey: "AIzaSyCdUjLZ8qk_H5LWTihbZVqB4n_jyPWRy64",
+  authDomain: "bio-serversadzzz.firebaseapp.com",
+  databaseURL: "https://bio-serversadzzz-default-rtdb.firebaseio.com",
+  projectId: "bio-serversadzzz",
+  storageBucket: "bio-serversadzzz.firebasestorage.app",
+  messagingSenderId: "1001916178195",
+  appId: "1:1001916178195:web:2073662d4593ceace684e6",
 };
 
 firebase.initializeApp(firebaseConfig);
