@@ -510,9 +510,9 @@
       appId: "1:1001916178195:web:2073662d4593ceace684e6"
     });
     const ref = firebase.database().ref('contador');
-    if (!localStorage.getItem('miel_view_counted')) {
+    if (!localStorage.getItem('view')) {
       ref.transaction(c => (c || 0) + 1);
-      localStorage.setItem('miel_view_counted', 'true');
+      localStorage.setItem('view', 'true');
     }
     ref.on('value', snap => {
       const el = document.getElementById('view-count');
