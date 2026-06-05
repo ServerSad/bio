@@ -2,1134 +2,648 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ServerSadzz Bio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>ServerSadzz | Bio</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500&display=swap" rel="stylesheet">
   <style>
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-
-    :root {
-      --bg: #050508;
-      --card: rgba(255,255,255,0.04);
-      --card-hover: rgba(255,255,255,0.07);
-      --bd: rgba(255,255,255,0.09);
-      --bd-hover: rgba(255,255,255,0.18);
-      --t: #c8c8d4;
-      --td: #6b6b7a;
-      --b: #f0f0f8;
-      --accent: #a78bfa;
-      --accent2: #60a5fa;
-      --glow: rgba(167,139,250,0.15);
-      --online: #4ade80;
-      --idle: #fbbf24;
-      --dnd: #f87171;
-      --offline: #6b7280;
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
     }
 
-    html { scroll-behavior: smooth; }
+    :root {
+      --f: -apple-system, "SF Pro Text", "SF Pro Display", "DM Sans", sans-serif;
+      --bg: transparent;
+      --card: rgba(0, 0, 0, 0.25);
+      --bd: rgba(255, 255, 255, 0.15);
+      --t: #e0e0e0;
+      --td: #aaaaaa;
+      --b: #ffffff;
+      --dot-border: #ffffff;
+      --views-bg: rgba(0, 0, 0, 0.5);
+    }
 
     body {
       background: var(--bg);
       color: var(--t);
-      font-family: 'DM Sans', sans-serif;
+      font-family: var(--f);
+      transition: background 0.4s ease, color 0.4s ease;
       min-height: 100vh;
-      overflow-x: hidden;
     }
 
-    /* ── NOISE TEXTURE ── */
-    body::before {
-      content: '';
+    .topbar {
       position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
+      top: 16px;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px;
+      z-index: 300;
       pointer-events: none;
-      z-index: 1000;
-      opacity: 0.4;
     }
 
-    /* ── VIDEO BG ── */
-    #video-bg {
-      position: fixed;
-      inset: 0;
-      z-index: -2;
-      overflow: hidden;
-    }
-    #video-bg video {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      filter: brightness(0.35) saturate(0.7);
-    }
-    #video-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: radial-gradient(ellipse at 50% 0%, rgba(167,139,250,0.08) 0%, transparent 70%),
-                  linear-gradient(to bottom, rgba(5,5,8,0.3) 0%, rgba(5,5,8,0.7) 100%);
+    .views {
+      background: var(--views-bg);
+      border: 1px solid var(--bd);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      padding: 5px 12px 5px 9px;
+      border-radius: 99px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      color: var(--b);
+      font-size: 12px;
+      font-weight: 500;
+      pointer-events: auto;
+      transition: background 0.4s, border-color 0.4s;
     }
 
-    /* ── AMBIENT ORBS ── */
-    .orb {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: -1;
-      animation: orbFloat 12s ease-in-out infinite;
-    }
-    .orb1 { width: 400px; height: 400px; background: rgba(167,139,250,0.07); top: -100px; left: -100px; animation-delay: 0s; }
-    .orb2 { width: 300px; height: 300px; background: rgba(96,165,250,0.06); bottom: -50px; right: -50px; animation-delay: -6s; }
-    @keyframes orbFloat {
-      0%,100% { transform: translate(0,0) scale(1); }
-      50% { transform: translate(30px,20px) scale(1.05); }
-    }
-
-    /* ── GATE ── */
-    #gate {
+    .gate {
       position: fixed;
       inset: 0;
       background: #000;
       display: flex;
-      flex-direction: column;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      z-index: 9000;
-      transition: none;
+      z-index: 200;
     }
-    .gate-inner {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 20px;
-      animation: gatePulse 3s ease-in-out infinite;
-    }
+
     .gate-cross {
-      font-size: 48px;
-      color: rgba(255,255,255,0.85);
-      font-family: Georgia, serif;
-      line-height: 1;
-    }
-    .gate-hint {
-      font-family: 'DM Sans', sans-serif;
-      font-size: 11px;
-      font-weight: 500;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: rgba(255,255,255,0.25);
-    }
-    .gate-line {
-      width: 1px;
-      height: 48px;
-      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.2), transparent);
-      margin: 4px 0;
-    }
-    @keyframes gatePulse {
-      0%,100% { opacity: 0.5; transform: scale(0.97); }
-      50% { opacity: 1; transform: scale(1); }
-    }
-    #gate.closing {
-      animation: gateClose 0.9s cubic-bezier(0.76,0,0.24,1) forwards;
-    }
-    @keyframes gateClose {
-      0% { opacity: 1; transform: scale(1); }
-      100% { opacity: 0; transform: scale(1.08); pointer-events: none; }
+      font-size: 52px;
+      color: rgba(255, 255, 255, 0.9);
+      animation: breathe 3s ease-in-out infinite;
+      user-select: none;
+      font-family: serif;
     }
 
-    /* ── TOPBAR ── */
-    #topbar {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      padding: 16px 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 500;
-      pointer-events: none;
+    @keyframes breathe {
+      0%, 100% {
+        opacity: 0.25;
+        transform: scale(0.96);
+      }
+      50% {
+        opacity: 1;
+        transform: scale(1.04);
+      }
     }
-    .views-pill {
-      background: rgba(0,0,0,0.5);
-      border: 1px solid var(--bd);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      padding: 6px 14px 6px 10px;
-      border-radius: 99px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 500;
-      color: var(--b);
-      pointer-events: auto;
-      letter-spacing: 0.3px;
-    }
-    .views-pill svg { opacity: 0.7; flex-shrink: 0; }
-    .views-dot {
-      width: 5px; height: 5px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 6px var(--accent);
-      animation: blinkDot 2s ease-in-out infinite;
-    }
-    @keyframes blinkDot { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
 
-    /* ── WRAP ── */
-    #wrap {
-      max-width: 440px;
+    .gate.closing {
+      animation: gateOut 0.85s cubic-bezier(0.76, 0, 0.24, 1) forwards;
+    }
+
+    @keyframes gateOut {
+      0% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      100% {
+        opacity: 0;
+        transform: scale(1.05);
+        display: none;
+      }
+    }
+
+    .wrap {
+      max-width: 420px;
       margin: 0 auto;
-      padding: 72px 20px 80px;
+      padding: 56px 18px 60px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
 
-    /* ── REVEAL ── */
     .reveal {
       opacity: 0;
-      transform: translateY(24px);
-      transition: opacity 0.7s cubic-bezier(0.4,0,0.2,1), transform 0.7s cubic-bezier(0.4,0,0.2,1);
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
     }
-    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-    /* ── PROFILE CARD ── */
-    .profile-card {
-      background: var(--card);
-      border: 1px solid var(--bd);
-      border-radius: 28px;
-      padding: 32px 24px 24px;
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .profile {
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 14px;
+      gap: 9px;
+      padding: 28px 0 16px;
       text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .profile-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, rgba(167,139,250,0.4), transparent);
     }
 
-    /* AVATAR */
-    .avatar-wrap {
+    .avatar-ring {
       position: relative;
-      width: 96px;
-      height: 96px;
+      width: 82px;
+      height: 82px;
     }
-    .avatar-ring-outer {
-      position: absolute;
-      inset: -4px;
-      border-radius: 50%;
-      background: conic-gradient(from 0deg, var(--accent), var(--accent2), var(--accent));
-      animation: spinRing 8s linear infinite;
-      opacity: 0.6;
-    }
-    .avatar-ring-mask {
-      position: absolute;
-      inset: 2px;
-      border-radius: 50%;
-      background: var(--bg);
-    }
-    @keyframes spinRing { to { transform: rotate(360deg); } }
+
     .avatar {
-      position: absolute;
-      inset: 3px;
-      width: calc(100% - 6px);
-      height: calc(100% - 6px);
+      width: 100%;
+      height: 100%;
       border-radius: 50%;
       object-fit: cover;
       object-position: center top;
-      z-index: 2;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+      transition: border-color 0.4s;
     }
-    .status-dot {
-      position: absolute;
-      bottom: 4px;
-      right: 4px;
-      width: 15px;
-      height: 15px;
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      background: #43b581;
+      border: 2.5px solid var(--dot-border);
       border-radius: 50%;
-      background: var(--online);
-      border: 2.5px solid var(--bg);
-      z-index: 3;
-      transition: background 0.4s;
-      box-shadow: 0 0 8px currentColor;
+      position: absolute;
+      bottom: 2px;
+      right: 2px;
+      transition: background-color 0.4s, border-color 0.4s;
     }
 
-    .profile-name {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
+    .profile h1 {
+      font-size: 26px;
+      font-weight: 600;
       color: var(--b);
-      letter-spacing: -0.5px;
-      line-height: 1;
+      letter-spacing: -0.4px;
+      transition: color 0.4s;
     }
 
-    .profile-badges {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 6px;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid var(--bd);
-      border-radius: 99px;
-      padding: 4px 10px;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--td);
-      letter-spacing: 0.5px;
-    }
-    .badge.accent { color: var(--accent); border-color: rgba(167,139,250,0.25); background: rgba(167,139,250,0.07); }
-    .badge.blue { color: var(--accent2); border-color: rgba(96,165,250,0.25); background: rgba(96,165,250,0.07); }
-    .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-
-    /* ── BIO CARD ── */
     .card {
       background: var(--card);
       border: 1px solid var(--bd);
-      border-radius: 22px;
+      border-radius: 24px;
       padding: 20px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      transition: background 0.25s, border-color 0.25s, transform 0.25s;
-      position: relative;
-      overflow: hidden;
-    }
-    .card:hover { background: var(--card-hover); border-color: var(--bd-hover); transform: translateY(-1px); }
-
-    .card-label {
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--td);
-      margin-bottom: 12px;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      transition: background 0.4s, border-color 0.4s;
     }
 
-    .bio-quote {
+    .card p {
       font-size: 15px;
-      font-style: italic;
-      color: var(--b);
-      font-weight: 400;
-      line-height: 1.7;
-      margin-bottom: 14px;
-      padding-left: 14px;
-      border-left: 2px solid rgba(167,139,250,0.4);
+      line-height: 1.65;
+      margin-bottom: 7px;
     }
 
-    .meta-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
+    .card p:last-child {
+      margin-bottom: 0;
     }
-    .chip {
-      display: inline-flex;
+
+    .tagline {
+      font-size: 16px !important;
+      font-style: italic;
+      color: var(--b) !important;
+      font-weight: 500;
+      margin-bottom: 12px !important;
+      letter-spacing: -0.2px;
+    }
+
+    .meta-row {
+      display: flex;
       align-items: center;
       gap: 5px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--bd);
-      border-radius: 8px;
-      padding: 5px 10px;
       font-size: 12px;
+      font-weight: 600;
       color: var(--td);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 10px;
     }
-    .chip svg { flex-shrink: 0; opacity: 0.7; }
 
-    /* ── LINKS CARD ── */
+    .links {
+      display: flex;
+      flex-direction: column;
+    }
+
     .lnk {
       display: flex;
       align-items: center;
-      gap: 14px;
-      padding: 14px 4px;
+      gap: 12px;
+      padding: 13px 2px;
       text-decoration: none;
       color: var(--t);
       border-bottom: 1px solid var(--bd);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 500;
-      transition: color 0.2s, padding-left 0.2s;
-      cursor: pointer;
-      position: relative;
+      transition: color 0.2s, border-color 0.4s;
     }
-    .lnk:last-of-type { border-bottom: none; }
-    .lnk:hover { padding-left: 8px; }
-    .lnk-icon {
-      width: 36px; height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: transform 0.2s;
-    }
-    .lnk:hover .lnk-icon { transform: scale(1.08); }
-    .lnk-dc .lnk-icon { background: rgba(88,101,242,0.15); color: #7289da; }
-    .lnk-rb .lnk-icon { background: rgba(255,255,255,0.07); color: #e3e3e3; }
-    .lnk-tt .lnk-icon { background: rgba(255,0,80,0.12); color: #ff2d55; }
-    .lnk-gh .lnk-icon { background: rgba(255,255,255,0.07); color: #c9d1d9; }
-    .lnk-meta {
-      display: flex;
-      flex-direction: column;
-      gap: 1px;
-      flex: 1;
-    }
-    .lnk-title { font-size: 14px; font-weight: 500; color: var(--b); }
-    .lnk-sub { font-size: 11px; color: var(--td); }
-    .lnk-arrow {
-      color: var(--td);
-      opacity: 0;
-      transform: translateX(-4px);
-      transition: opacity 0.2s, transform 0.2s;
-      flex-shrink: 0;
-    }
-    .lnk:hover .lnk-arrow { opacity: 1; transform: translateX(0); }
 
-    /* ── FRIENDS SECTION ── */
+    .lnk:last-child {
+      border-bottom: none;
+    }
+
+    .dc:hover {
+      color: #5865F2;
+    }
+
+    .rb:hover {
+      color: var(--b);
+    }
+
+    .tt:hover {
+      color: #ff0050;
+    }
+
+    .friends-inline {
+      padding-top: 14px;
+      margin-top: 4px;
+      border-top: 1px solid var(--bd);
+    }
+
     .friends-label {
+      display: block;
       font-size: 10px;
       font-weight: 600;
-      letter-spacing: 2.5px;
+      letter-spacing: 2px;
       text-transform: uppercase;
       color: var(--td);
-      margin-bottom: 14px;
-      display: block;
+      margin-bottom: 10px;
     }
-    .friends-grid {
+
+    .friends-row {
       display: flex;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
       align-items: center;
     }
-    .friend-btn {
+
+    .friend {
       position: relative;
-      display: inline-flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      cursor: pointer;
+      display: block;
       text-decoration: none;
-      border: none;
-      background: none;
-      padding: 0;
+      flex-shrink: 0;
+      cursor: pointer;
     }
-    .friend-img-wrap {
-      position: relative;
-      width: 44px;
-      height: 44px;
-    }
-    .friend-img-wrap img {
-      width: 100%; height: 100%;
-      border-radius: 12px;
+
+    .friend img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
       object-fit: cover;
       border: 1.5px solid var(--bd);
       display: block;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      transition: transform 0.2s, border-color 0.4s;
     }
-    .friend-btn:hover .friend-img-wrap img,
-    .friend-btn.touched .friend-img-wrap img {
-      transform: scale(1.1) translateY(-2px);
-      border-color: var(--accent);
-      box-shadow: 0 8px 20px rgba(167,139,250,0.2);
+
+    .friend:hover img,
+    .friend.touched img {
+      transform: scale(1.12);
     }
-    .friend-name-tag {
-      font-size: 10px;
-      color: var(--td);
-      font-weight: 500;
-      letter-spacing: 0.3px;
-      text-align: center;
-      max-width: 50px;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
+
     .friend-tooltip {
       position: absolute;
-      bottom: calc(100% + 10px);
+      bottom: calc(100% + 8px);
       left: 50%;
-      transform: translateX(-50%) translateY(6px);
-      background: rgba(15,15,20,0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--bd-hover);
-      color: var(--b);
+      transform: translateX(-50%) translateY(4px);
+      background: var(--b);
+      color: #000;
       font-size: 11px;
       font-weight: 600;
-      padding: 5px 12px;
+      letter-spacing: 0.5px;
+      padding: 4px 10px;
       border-radius: 99px;
       white-space: nowrap;
       opacity: 0;
       pointer-events: none;
-      transition: opacity 0.2s, transform 0.2s;
-      z-index: 20;
+      transition: opacity 0.2s ease, transform 0.2s ease;
+      z-index: 10;
     }
+
     .friend-tooltip::after {
       content: '';
       position: absolute;
-      top: 100%; left: 50%;
+      top: 100%;
+      left: 50%;
       transform: translateX(-50%);
       border: 4px solid transparent;
-      border-top-color: var(--bd-hover);
+      border-top-color: var(--b);
     }
-    .friend-btn:hover .friend-tooltip,
-    .friend-btn.touched .friend-tooltip {
+
+    .friend:hover .friend-tooltip,
+    .friend.touched .friend-tooltip {
       opacity: 1;
       transform: translateX(-50%) translateY(0);
     }
 
-    /* ── MUSIC PLAYER ── */
-    .music-player {
-      background: var(--card);
-      border: 1px solid var(--bd);
-      border-radius: 22px;
-      padding: 18px 20px;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-    }
-    .music-current {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .music-art {
-      width: 48px; height: 48px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1px solid var(--bd);
-      flex-shrink: 0;
-    }
-    .music-info { flex: 1; min-width: 0; }
-    .music-title {
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--b);
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-    .music-artist { font-size: 12px; color: var(--td); margin-top: 2px; }
-    .music-controls {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .ctrl-btn {
-      background: none;
-      border: none;
-      color: var(--td);
-      cursor: pointer;
-      padding: 6px;
-      border-radius: 8px;
-      transition: color 0.2s, background 0.2s;
-      display: flex;
-      align-items: center;
-    }
-    .ctrl-btn:hover { color: var(--b); background: rgba(255,255,255,0.07); }
-    .ctrl-btn.play {
-      width: 36px; height: 36px;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 50%;
-      justify-content: center;
-      padding: 0;
-      box-shadow: 0 0 16px rgba(167,139,250,0.35);
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .ctrl-btn.play:hover { transform: scale(1.07); box-shadow: 0 0 24px rgba(167,139,250,0.5); }
-    .progress-wrap {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .progress-bar {
-      width: 100%;
-      height: 3px;
-      background: rgba(255,255,255,0.1);
-      border-radius: 99px;
-      cursor: pointer;
-      position: relative;
-      overflow: hidden;
-    }
-    .progress-fill {
-      height: 100%;
-      background: linear-gradient(90deg, var(--accent), var(--accent2));
-      border-radius: 99px;
-      width: 0%;
-      transition: width 0.2s linear;
-    }
-    .progress-times {
-      display: flex;
-      justify-content: space-between;
-      font-size: 10px;
-      color: var(--td);
-      letter-spacing: 0.3px;
-    }
-    .track-list {
-      margin-top: 14px;
-      border-top: 1px solid var(--bd);
-      padding-top: 12px;
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-    }
-    .track-item {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      padding: 8px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .track-item:hover { background: rgba(255,255,255,0.05); }
-    .track-item.active { background: rgba(167,139,250,0.1); }
-    .track-num {
-      font-size: 11px;
-      color: var(--td);
-      width: 16px;
-      text-align: center;
-      flex-shrink: 0;
-    }
-    .track-item.active .track-num { color: var(--accent); }
-    .track-thumb {
-      width: 32px; height: 32px;
-      border-radius: 7px;
-      object-fit: cover;
-      flex-shrink: 0;
-    }
-    .track-info { flex: 1; min-width: 0; }
-    .track-name { font-size: 13px; color: var(--t); font-weight: 500; }
-    .track-dur { font-size: 11px; color: var(--td); margin-top: 1px; }
-    .eq-bars {
-      display: flex;
-      align-items: flex-end;
-      gap: 2px;
-      height: 14px;
-    }
-    .eq-bars span {
-      width: 3px;
-      background: var(--accent);
-      border-radius: 2px;
-      animation: eqBounce 0.8s ease-in-out infinite alternate;
-    }
-    .eq-bars span:nth-child(1) { animation-delay: 0s; }
-    .eq-bars span:nth-child(2) { animation-delay: 0.15s; }
-    .eq-bars span:nth-child(3) { animation-delay: 0.3s; }
-    @keyframes eqBounce {
-      from { height: 3px; }
-      to { height: 14px; }
-    }
-
-    /* ── FOOTER ── */
     .foot {
       text-align: center;
       font-size: 12px;
       color: var(--td);
-      margin-top: 8px;
+      margin-top: 10px;
       display: flex;
       flex-direction: column;
       gap: 4px;
-      letter-spacing: 0.3px;
-    }
-    .foot a { color: var(--td); text-decoration: none; transition: color 0.2s; }
-    .foot a:hover { color: var(--t); }
-    .heart { color: #f87171; display: inline-block; animation: heartbeat 1.5s ease-in-out infinite; }
-    @keyframes heartbeat {
-      0%,100% { transform: scale(1); }
-      14% { transform: scale(1.2); }
-      28% { transform: scale(1); }
-      42% { transform: scale(1.1); }
+      transition: color 0.4s;
     }
 
-    /* ── CURSOR GLOW ── */
-    #cursor-glow {
+    .video-background {
       position: fixed;
-      width: 300px; height: 300px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(167,139,250,0.06) 0%, transparent 70%);
-      pointer-events: none;
-      z-index: 999;
-      transform: translate(-50%, -50%);
-      transition: left 0.15s ease-out, top 0.15s ease-out;
-    }
-
-    /* ── TOAST ── */
-    #toast {
-      position: fixed;
-      bottom: 24px;
-      left: 50%;
-      transform: translateX(-50%) translateY(80px);
-      background: rgba(15,15,20,0.95);
-      backdrop-filter: blur(16px);
-      border: 1px solid var(--bd-hover);
-      color: var(--b);
-      font-size: 13px;
-      font-weight: 500;
-      padding: 10px 18px;
-      border-radius: 99px;
-      z-index: 9999;
-      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), opacity 0.4s;
-      opacity: 0;
-      white-space: nowrap;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -2;
+      overflow: hidden;
       pointer-events: none;
     }
-    #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-    /* ── SCROLLBAR ── */
-    ::-webkit-scrollbar { width: 4px; }
-    ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 99px; }
-    ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+    .video-background video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .video-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.4);
+      z-index: 1;
+    }
 
     @media (max-width: 480px) {
-      #wrap { padding: 60px 16px 72px; }
-      .profile-name { font-size: 24px; }
-      #cursor-glow { display: none; }
+      .wrap {
+        padding: 56px 16px 60px;
+      }
+      
+      .friend-tooltip {
+        white-space: nowrap;
+      }
     }
   </style>
 </head>
 <body>
 
-<!-- CURSOR GLOW -->
-<div id="cursor-glow"></div>
-
-<!-- AMBIENT ORBS -->
-<div class="orb orb1"></div>
-<div class="orb orb2"></div>
-
-<!-- VIDEO BG -->
-<div id="video-bg">
+<div class="video-background">
   <video id="bg-video" loop playsinline preload="auto" muted>
     <source src="https://files.catbox.moe/47kfo6.mp4" type="video/mp4">
   </video>
+  <div class="video-overlay"></div>
 </div>
 
-<!-- GATE -->
-<div id="gate">
-  <div class="gate-inner">
-    <div class="gate-line"></div>
-    <span class="gate-cross">✞</span>
-    <div class="gate-line"></div>
-    <span class="gate-hint">toque para entrar</span>
-  </div>
+<div class="gate" id="gate">
+  <div class="gate-cross">✞</div>
 </div>
 
-<!-- TOPBAR -->
-<div id="topbar">
-  <div class="views-pill">
-    <div class="views-dot"></div>
-    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
-      <circle cx="12" cy="12" r="3"/>
+<div class="topbar">
+  <div class="views">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+      <circle cx="12" cy="12" r="3"></circle>
     </svg>
     <span id="view-count">—</span>
   </div>
 </div>
 
-<!-- MAIN CONTENT -->
-<div id="wrap">
-
-  <!-- PROFILE -->
-  <div class="profile-card reveal">
-    <div class="avatar-wrap">
-      <div class="avatar-ring-outer"></div>
-      <div class="avatar-ring-mask"></div>
-      <img src="https://files.catbox.moe/y9ao70.png" alt="serversadzzz" class="avatar" id="main-avatar">
-      <div class="status-dot" id="status-dot"></div>
-    </div>
-    <h1 class="profile-name">ServerSadzzz</h1>
-    <div class="profile-badges">
-      <span class="badge accent"><span class="badge-dot"></span> online</span>
-      <span class="badge">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
-        </svg>
-        Brasil
-      </span>
-      <span class="badge blue">✦ ele/dele</span>
+<div class="wrap" id="wrap">
+  <div class="reveal">
+    <div class="profile">
+      <div class="avatar-ring">
+        <img src="https://files.catbox.moe/y9ao70.png" alt="ServerSadzzz" class="avatar">
+        <div class="dot" id="discord-dot"></div>
+      </div>
+      <h1>ServerSadzzz</h1>
     </div>
   </div>
 
-  <!-- BIO -->
-  <div class="card reveal" style="transition-delay: 0.08s">
-    <div class="card-label">Sobre mim</div>
-    <p class="bio-quote">"Do not pray for a life without problems. Pray for a soul unafraid to face them."</p>
-    <div class="meta-chips">
-      <span class="chip">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
-        Roblox
-      </span>
-      <span class="chip">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
-        dev
-      </span>
-      <span class="chip">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
-        música
-      </span>
-      <span class="chip">
-        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
-        lives
-      </span>
-    </div>
+  <div class="card reveal" style="transition-delay: 0.05s">
+    <div class="meta-row">SOBRE</div>
+    <p class="tagline">"Do not pray for a life without problems. Pray for a soul unafraid to face them."</p>
+    <p>Brasil • ele/dele<br>Roblox dev • música • lives</p>
   </div>
 
-  <!-- LINKS -->
-  <div class="card reveal" style="transition-delay: 0.16s">
-    <div class="card-label">links</div>
-
-    <a href="https://discord.gg/tsk-community-1362613042118004847" target="_blank" class="lnk lnk-dc">
-      <div class="lnk-icon">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M20.317 4.3698a19.7913 19.7913 0 00-4.8851-1.5152.0741.0741 0 00-.0785.0371c-.211.3753-.4447.8648-.6083 1.2495-1.8447-.2762-3.68-.2762-5.4868 0-.1636-.3933-.4058-.8742-.6177-1.2495a.077.077 0 00-.0785-.037 19.7363 19.7363 0 00-4.8852 1.515.0699.0699 0 00-.0321.0277C.5334 9.0458-.319 13.5799.0992 18.0578a.0824.0824 0 00.0312.0561c2.0528 1.5076 4.0413 2.4228 5.9929 3.0294a.0777.0777 0 00.0842-.0276c.4616-.6304.8731-1.2952 1.226-1.9942a.076.076 0 00-.0416-.1057c-.6528-.2476-1.2743-.5495-1.8722-.8923a.077.077 0 01-.0076-.1277c.1258-.0943.2517-.1923.3718-.2914a.0743.0743 0 01.0776-.0105c3.9278 1.7933 8.18 1.7933 12.0614 0a.0739.0739 0 01.0785.0095c.1202.099.246.1981.3728.2924a.077.077 0 01-.0066.1276 12.2986 12.2986 0 01-1.873.8914.0766.0766 0 00-.0407.1067c.3604.698.7719 1.3628 1.225 1.9932a.076.076 0 00.0842.0286c1.961-.6067 3.9495-1.5219 6.0023-3.0294a.077.077 0 00.0313-.0552c.5004-5.177-.8382-9.6739-3.5485-13.6604a.061.061 0 00-.0312-.0286z"/>
-        </svg>
-      </div>
-      <div class="lnk-meta">
-        <span class="lnk-title">Discord</span>
-        <span class="lnk-sub">Tsk Community</span>
-      </div>
-      <svg class="lnk-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-
-    <a href="https://www.roblox.com/users/1844551/profile" target="_blank" class="lnk lnk-rb">
-      <div class="lnk-icon">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.5 24L0 18.5L5.5 0L24 5.5L18.5 24Z"/>
-        </svg>
-      </div>
-      <div class="lnk-meta">
-        <span class="lnk-title">Roblox</span>
-        <span class="lnk-sub">Meu Perfil</span>
-      </div>
-      <svg class="lnk-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-
-    <a href="https://tiktok.com/@serversadzzz" target="_blank" class="lnk lnk-tt">
-      <div class="lnk-icon">
-        <svg width="18" height="18" fill="currentColor" viewBox="0 0 24 24">
-          <path d="M12.53.02C13.84 0 15.14.01 16.44 0c.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.17-2.89-.6-4.13-1.46-.77-.53-1.43-1.19-1.93-1.97V15.5c-.01 1.61-.41 3.23-1.32 4.54-1.5 2.13-4.15 3.32-6.73 2.94-2.23-.33-4.22-1.85-5.11-3.95-1.05-2.52-.46-5.71 1.51-7.53 1.4-1.29 3.31-1.91 5.2-1.7v4.11c-1.07-.15-2.22.11-3.01.89-.86.84-1.01 2.21-.45 3.23.51.92 1.54 1.5 2.59 1.49 1.48-.01 2.72-1.31 2.72-2.78V.02z"/>
-        </svg>
-      </div>
-      <div class="lnk-meta">
-        <span class="lnk-title">TikTok</span>
-        <span class="lnk-sub">@serversadzzz</span>
-      </div>
-      <svg class="lnk-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
-
-    <!-- FRIENDS -->
-    <div style="padding-top: 16px; margin-top: 4px; border-top: 1px solid var(--bd);">
-      <span class="friends-label">amigos</span>
-      <div class="friends-grid">
-        <div class="friend-btn" data-name="kaua">
-          <div class="friend-img-wrap">
-            <div class="friend-tooltip">They Call</div>
-            <img src="https://files.catbox.moe/zxrbp0.png" alt="kaua">
-          </div>
-          <span class="friend-name-tag">They Call</span>
-        </div>
-        <div class="friend-btn" data-name="abeia">
-          <div class="friend-img-wrap">
-            <div class="friend-tooltip">Abeia</div>
-            <img src="https://files.catbox.moe/tc213g.png" alt="abeia">
-          </div>
-          <span class="friend-name-tag">Abeia</span>
-        </div>
-        <div class="friend-btn" data-name="trvwz">
-          <div class="friend-img-wrap">
-            <div class="friend-tooltip">Trvwz7</div>
-            <img src="https://files.catbox.moe/kqpvbr.png" alt="trvwz">
-          </div>
-          <span class="friend-name-tag">Trvwz7</span>
-        </div>
+  <div class="card reveal" style="transition-delay: 0.1s">
+    <div class="meta-row">LINKS</div>
+    <div class="links">
+      <a href="https://discord.gg/tsk-community-1362613042118004847" target="_blank" class="lnk dc">
+        <span>Discord</span> <span style="flex:1">Tsk Community</span> <span>↗</span>
+      </a>
+      <a href="https://www.roblox.com/users/1844551/profile" target="_blank" class="lnk rb">
+        <span>Roblox</span> <span style="flex:1">Meu Perfil</span> <span>↗</span>
+      </a>
+      <a href="https://tiktok.com/@serversadzzz" target="_blank" class="lnk tt">
+        <span>TikTok</span> <span style="flex:1">@serversadzzz</span> <span>↗</span>
+      </a>
+    </div>
+    
+    <div class="friends-inline">
+      <span class="friends-label">AMIGOS</span>
+      <div class="friends-row">
+        <a class="friend" data-name="They Call">
+          <img src="https://files.catbox.moe/zxrbp0.png" alt="They Call">
+          <span class="friend-tooltip">They Call</span>
+        </a>
+        <a class="friend" data-name="Abeia">
+          <img src="https://files.catbox.moe/tc213g.png" alt="Abeia">
+          <span class="friend-tooltip">Abeia</span>
+        </a>
+        <a class="friend" data-name="Trvwz7">
+          <img src="https://files.catbox.moe/kqpvbr.png" alt="Trvwz7">
+          <span class="friend-tooltip">Trvwz7</span>
+        </a>
       </div>
     </div>
   </div>
 
-  <!-- MUSIC PLAYER -->
-  <div class="music-player card reveal" style="transition-delay: 0.24s">
-    <div class="card-label">Músicas</div>
-    <div class="music-current">
-      <img id="music-art" class="music-art" src="https://files.catbox.moe/16mirrors.jpg" alt="art">
-      <div class="music-info">
-        <div class="music-title" id="music-title">16 Mirrors</div>
-        <div class="music-artist" id="music-artist">—</div>
-      </div>
-      <div class="eq-bars" id="eq-bars" style="display:none">
-        <span></span><span></span><span></span>
-      </div>
+  <div class="card reveal" style="transition-delay: 0.15s">
+    <div class="meta-row">MÚSICA</div>
+    <div id="music-status" style="font-size: 14px; font-weight: 500; margin-bottom: 12px;">Carregando...</div>
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <button id="play-pause-btn" style="background: rgba(255,255,255,0.1); border: 1px solid var(--bd); color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-family: var(--f); font-weight: 600;">Play</button>
+      <button id="next-btn" style="background: rgba(255,255,255,0.05); border: 1px solid var(--bd); color: white; padding: 8px 16px; border-radius: 40px; cursor: pointer; font-family: var(--f);">Próxima</button>
+      <span id="track-name" style="color: var(--b); font-size: 13px;">Nenhuma música</span>
     </div>
-    <div class="music-controls">
-      <button class="ctrl-btn" id="btn-prev" aria-label="anterior">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 6h2v12H6zm3.5 6 8.5 6V6z"/></svg>
-      </button>
-      <div class="progress-wrap">
-        <div class="progress-bar" id="progress-bar">
-          <div class="progress-fill" id="progress-fill"></div>
-        </div>
-        <div class="progress-times">
-          <span id="time-cur">0:00</span>
-          <span id="time-tot">0:00</span>
-        </div>
-      </div>
-      <button class="ctrl-btn play" id="btn-play" aria-label="play/pause">
-        <svg id="play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-      </button>
-      <button class="ctrl-btn" id="btn-next" aria-label="próxima">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
-      </button>
-    </div>
-    <div class="track-list" id="track-list"></div>
   </div>
 
-  <!-- FOOTER -->
-  <p class="foot reveal" style="transition-delay: 0.32s">
-    <span>feito com <span class="heart">♥</span> por miel</span>
-    <span id="last-updated" style="font-size:11px;"></span>
-  </p>
+  <div class="foot reveal" style="transition-delay: 0.2s">
+    <span>feito com por miel</span>
+    <span id="last-updated"></span>
+  </div>
 </div>
 
-<!-- TOAST -->
-<div id="toast"></div>
-
-<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 
 <script>
-// ── FIREBASE VIEWS ──
-var firebaseConfig = {
-  apiKey: "AIzaSyBP6_x00NmTX9yRNA2LpTdk0cPJQfIgbgs",
-  authDomain: "miel-website-50a32.firebaseapp.com",
-  databaseURL: "https://miel-website-50a32-default-rtdb.firebaseio.com",
-  projectId: "miel-website-50a32",
-  storageBucket: "miel-website-50a32.firebasestorage.app",
-  messagingSenderId: "386877582726",
-  appId: "1:386877582726:web:c914fa9344d05a53aa5007"
-};
-try {
-  firebase.initializeApp(firebaseConfig);
-  var db = firebase.database();
-  var viewRef = db.ref('contador');
-  if (!localStorage.getItem('miel_view_counted')) {
-    viewRef.transaction(function(c) { return (c || 0) + 1; });
-    localStorage.setItem('miel_view_counted', 'true');
+(function() {
+  const firebaseConfig = {
+    apiKey: "AIzaSyCdUjLZ8qk_H5LWTihbZVqB4n_jyPWRy64",
+    authDomain: "bio-serversadzzz.firebaseapp.com",
+    databaseURL: "https://bio-serversadzzz-default-rtdb.firebaseio.com",
+    projectId: "bio-serversadzzz",
+    storageBucket: "bio-serversadzzz.firebasestorage.app",
+    messagingSenderId: "1001916178195",
+    appId: "1:1001916178195:web:2073662d4593ceace684e6"
+  };
+
+  let db, viewRef;
+  try {
+    firebase.initializeApp(firebaseConfig);
+    db = firebase.database();
+    viewRef = db.ref('contador');
+    if (!localStorage.getItem('miel_view_counted')) {
+      viewRef.transaction(c => (c || 0) + 1);
+      localStorage.setItem('miel_view_counted', 'true');
+    }
+    viewRef.on('value', snap => {
+      const el = document.getElementById('view-count');
+      if (el) {
+        let v = snap.val() || 0;
+        el.innerText = v >= 1000 ? (v/1000).toFixed(1) + 'k' : v;
+      }
+    });
+  } catch(e) {}
+
+  const gate = document.getElementById('gate');
+  const bgVideo = document.getElementById('bg-video');
+  if (bgVideo) {
+    bgVideo.load();
+    bgVideo.muted = true;
+    bgVideo.play().catch(() => {});
   }
-  viewRef.on('value', function(snap) {
-    var el = document.getElementById('view-count');
-    if (el) {
-      var v = snap.val() || 0;
-      el.innerText = v >= 1000 ? (v/1000).toFixed(1)+'k' : v;
+
+  if (gate) {
+    gate.addEventListener('click', () => {
+      gate.classList.add('closing');
+      gate.addEventListener('animationend', () => {
+        gate.style.display = 'none';
+        const reveals = document.querySelectorAll('.reveal');
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const delay = parseFloat(entry.target.style.transitionDelay || '0') * 1000;
+              setTimeout(() => entry.target.classList.add('visible'), delay);
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.1 });
+        reveals.forEach(el => observer.observe(el));
+        if (bgVideo) {
+          bgVideo.muted = false;
+          bgVideo.play().catch(() => {});
+        }
+      }, { once: true });
+    });
+  }
+
+  function fetchDiscordStatus() {
+    fetch('https://api.lanyard.rest/v1/users/1483604270317174844')
+      .then(res => res.json())
+      .then(data => {
+        if (data && data.data) {
+          const dot = document.getElementById('discord-dot');
+          const status = data.data.discord_status || 'offline';
+          const colors = { online: '#43b581', dnd: '#f04747', idle: '#faa61a', offline: '#747f8d' };
+          if (dot) dot.style.backgroundColor = colors[status] || '#747f8d';
+        }
+      })
+      .catch(() => {});
+  }
+
+  fetchDiscordStatus();
+  setInterval(fetchDiscordStatus, 30000);
+
+  const tracks = [
+    { name: '16 Mirrors - SadBoy Prolific', url: 'https://files.catbox.moe/16mirrors.mp3' },
+    { name: 'August 10 - SadBoy Prolific', url: 'https://files.catbox.moe/august10.mp3' },
+    { name: 'Nuts - SadBoy Prolific', url: 'https://files.catbox.moe/nuts.mp3' }
+  ];
+  
+  let currentTrack = 0;
+  let isPlaying = false;
+  let audio = new Audio();
+  
+  const playPauseBtn = document.getElementById('play-pause-btn');
+  const nextBtn = document.getElementById('next-btn');
+  const trackNameSpan = document.getElementById('track-name');
+  const musicStatusDiv = document.getElementById('music-status');
+  
+  function loadTrack(index) {
+    if (index >= tracks.length) index = 0;
+    if (index < 0) index = tracks.length - 1;
+    currentTrack = index;
+    audio.src = tracks[currentTrack].url;
+    trackNameSpan.textContent = tracks[currentTrack].name;
+    musicStatusDiv.innerHTML = '🎵 ' + tracks[currentTrack].name;
+    audio.load();
+    if (isPlaying) {
+      audio.play().catch(() => {
+        isPlaying = false;
+        playPauseBtn.textContent = 'Play';
+        musicStatusDiv.innerHTML = '🎵 ' + tracks[currentTrack].name + ' (pausado)';
+      });
+    }
+  }
+  
+  function playPause() {
+    if (isPlaying) {
+      audio.pause();
+      isPlaying = false;
+      playPauseBtn.textContent = 'Play';
+      musicStatusDiv.innerHTML = '🎵 ' + tracks[currentTrack].name + ' (pausado)';
+    } else {
+      audio.play().then(() => {
+        isPlaying = true;
+        playPauseBtn.textContent = 'Pause';
+        musicStatusDiv.innerHTML = '🎵 ' + tracks[currentTrack].name;
+      }).catch(() => {
+        musicStatusDiv.innerHTML = '🎵 Clique para reproduzir';
+      });
+    }
+  }
+  
+  function nextTrack() {
+    currentTrack = (currentTrack + 1) % tracks.length;
+    loadTrack(currentTrack);
+    if (isPlaying) {
+      audio.play().catch(() => {
+        isPlaying = false;
+        playPauseBtn.textContent = 'Play';
+      });
+    }
+  }
+  
+  if (playPauseBtn) playPauseBtn.addEventListener('click', playPause);
+  if (nextBtn) nextBtn.addEventListener('click', nextTrack);
+  
+  audio.addEventListener('ended', () => {
+    nextTrack();
+  });
+  
+  audio.addEventListener('canplay', () => {
+    if (isPlaying) {
+      audio.play().catch(() => {});
     }
   });
-} catch(e) {}
-
-// ── VIDEO + GATE ──
-var gate = document.getElementById('gate');
-var bgVideo = document.getElementById('bg-video');
-if (bgVideo) { bgVideo.load(); bgVideo.muted = true; bgVideo.play().catch(function(){}); }
-
-if (gate) {
-  gate.addEventListener('click', function() {
-    gate.classList.add('closing');
-    gate.addEventListener('animationend', function() {
-      gate.style.display = 'none';
-      startReveal();
-      if (bgVideo) { bgVideo.muted = false; bgVideo.play().catch(function(){}); }
-    }, { once: true });
-  });
-}
-
-// ── REVEAL ──
-function startReveal() {
-  var els = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window) {
-    var io = new IntersectionObserver(function(entries) {
-      entries.forEach(function(en, i) {
-        if (en.isIntersecting) {
-          var delay = parseFloat(en.target.style.transitionDelay || '0') * 1000;
-          setTimeout(function() { en.target.classList.add('visible'); }, delay);
-          io.unobserve(en.target);
-        }
-      });
-    }, { threshold: 0.05 });
-    els.forEach(function(el) { io.observe(el); });
-  } else {
-    els.forEach(function(el) { el.classList.add('visible'); });
+  
+  loadTrack(0);
+  
+  function formatDate() {
+    const d = new Date(document.lastModified);
+    const months = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+    return 'atualizado em ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
   }
-}
-
-// ── DISCORD STATUS ──
-var STATUS_MAP = { online: '#4ade80', dnd: '#f87171', idle: '#fbbf24', offline: '#6b7280' };
-var STATUS_LABEL = { online: 'online', dnd: 'ocupado', idle: 'ausente', offline: 'offline' };
-
-function fetchDiscordStatus() {
-  fetch('https://api.lanyard.rest/v1/users/1239726174511300648')
-    .then(function(r) { return r.json(); })
-    .then(function(d) {
-      if (d && d.data) {
-        var dot = document.getElementById('status-dot');
-        var badge = document.querySelector('.badge.accent');
-        var status = d.data.discord_status || 'offline';
-        if (dot) { dot.style.background = STATUS_MAP[status] || '#6b7280'; dot.style.boxShadow = '0 0 8px ' + (STATUS_MAP[status] || '#6b7280'); }
-        if (badge) { badge.innerHTML = '<span class="badge-dot"></span> ' + (STATUS_LABEL[status] || status); badge.style.color = status === 'offline' ? 'var(--td)' : 'var(--accent)'; }
-      }
-    }).catch(function(){});
-}
-fetchDiscordStatus();
-setInterval(fetchDiscordStatus, 30000);
-
-// ── LAST UPDATED ──
-(function() {
-  var el = document.getElementById('last-updated');
-  if (!el) return;
-  var d = new Date(document.lastModified);
-  var months = ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
-  el.innerText = 'atualizado em ' + months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  
+  const lastUpdatedSpan = document.getElementById('last-updated');
+  if (lastUpdatedSpan) lastUpdatedSpan.textContent = formatDate();
+  
+  document.querySelectorAll('.friend').forEach(el => {
+    el.addEventListener('touchstart', function(e) {
+      e.preventDefault();
+      this.classList.add('touched');
+      setTimeout(() => this.classList.remove('touched'), 300);
+    }, { passive: false });
+  });
 })();
-
-// ── FRIENDS TOUCH ──
-document.querySelectorAll('.friend-btn').forEach(function(el) {
-  el.addEventListener('touchstart', function(e) {
-    e.preventDefault();
-    el.classList.add('touched');
-    setTimeout(function() { el.classList.remove('touched'); }, 600);
-    var href = el.getAttribute('href');
-    if (href) setTimeout(function() { window.open(href, '_blank'); }, 150);
-  }, { passive: false });
-});
-
-// ── CURSOR GLOW ──
-var cg = document.getElementById('cursor-glow');
-document.addEventListener('mousemove', function(e) {
-  if (cg) { cg.style.left = e.clientX + 'px'; cg.style.top = e.clientY + 'px'; }
-});
-
-// ── TOAST ──
-function showToast(msg) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2200);
-}
-
-// ── MUSIC PLAYER ──
-var tracks = [
-  { title: '16 Mirrors', artist: 'SadBoy Prolific', src: 'https://files.catbox.moe/august10.mp3', art: 'https://files.catbox.moe/16mirrors.jpg', dur: '3:24' },
-  { title: 'August 10', artist: 'SadBoy Prolific', src: 'https://files.catbox.moe/august10.mp3', art: 'https://files.catbox.moe/august10.jpg', dur: '3:11' },
-  { title: 'Nuts', artist: 'SadBoy Prolific', src: 'https://files.catbox.moe/nuts.mp3', art: 'https://files.catbox.moe/nuts.jpg', dur: '2:58' }
-];
-
-var audio = new Audio();
-var curIdx = 0;
-var isPlaying = false;
-
-function fmtTime(s) {
-  if (isNaN(s)) return '0:00';
-  var m = Math.floor(s/60), ss = Math.floor(s%60);
-  return m + ':' + (ss < 10 ? '0' : '') + ss;
-}
-
-function loadTrack(idx) {
-  var t = tracks[idx];
-  document.getElementById('music-art').src = t.art;
-  document.getElementById('music-title').textContent = t.title;
-  document.getElementById('music-artist').textContent = t.artist;
-  audio.src = t.src;
-  audio.load();
-  document.querySelectorAll('.track-item').forEach(function(el, i) {
-    el.classList.toggle('active', i === idx);
-  });
-}
-
-function renderTrackList() {
-  var tl = document.getElementById('track-list');
-  tl.innerHTML = '';
-  tracks.forEach(function(t, i) {
-    var item = document.createElement('div');
-    item.className = 'track-item' + (i === curIdx ? ' active' : '');
-    item.innerHTML =
-      '<span class="track-num">' + (i+1) + '</span>' +
-      '<img class="track-thumb" src="' + t.art + '" alt="' + t.title + '">' +
-      '<div class="track-info"><div class="track-name">' + t.title + '</div><div class="track-dur">' + t.dur + '</div></div>';
-    item.addEventListener('click', function() {
-      curIdx = i;
-      loadTrack(curIdx);
-      audio.play().then(function() {
-        setPlaying(true);
-      }).catch(function(){});
-    });
-    tl.appendChild(item);
-  });
-}
-
-function setPlaying(v) {
-  isPlaying = v;
-  var icon = document.getElementById('play-icon');
-  var eq = document.getElementById('eq-bars');
-  if (v) {
-    icon.innerHTML = '<rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>';
-    if (eq) eq.style.display = 'flex';
-  } else {
-    icon.innerHTML = '<polygon points="5 3 19 12 5 21 5 3"/>';
-    if (eq) eq.style.display = 'none';
-  }
-}
-
-document.getElementById('btn-play').addEventListener('click', function() {
-  if (isPlaying) {
-    audio.pause();
-    setPlaying(false);
-  } else {
-    audio.play().then(function() { setPlaying(true); }).catch(function() {
-      showToast('clique para liberar o áudio 🎵');
-    });
-  }
-});
-
-document.getElementById('btn-next').addEventListener('click', function() {
-  curIdx = (curIdx + 1) % tracks.length;
-  loadTrack(curIdx);
-  if (isPlaying) audio.play().catch(function(){});
-});
-
-document.getElementById('btn-prev').addEventListener('click', function() {
-  if (audio.currentTime > 3) { audio.currentTime = 0; return; }
-  curIdx = (curIdx - 1 + tracks.length) % tracks.length;
-  loadTrack(curIdx);
-  if (isPlaying) audio.play().catch(function(){});
-});
-
-audio.addEventListener('timeupdate', function() {
-  if (!audio.duration) return;
-  var pct = (audio.currentTime / audio.duration) * 100;
-  document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('time-cur').textContent = fmtTime(audio.currentTime);
-  document.getElementById('time-tot').textContent = fmtTime(audio.duration);
-});
-
-audio.addEventListener('ended', function() {
-  curIdx = (curIdx + 1) % tracks.length;
-  loadTrack(curIdx);
-  audio.play().catch(function(){});
-});
-
-document.getElementById('progress-bar').addEventListener('click', function(e) {
-  if (!audio.duration) return;
-  var r = this.getBoundingClientRect();
-  audio.currentTime = ((e.clientX - r.left) / r.width) * audio.duration;
-});
-
-renderTrackList();
-loadTrack(0);
 </script>
 </body>
 </html>
